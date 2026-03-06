@@ -1,9 +1,0 @@
-1. First I setup my project,
-2. Then setup my static directories,
-3. Then ran a test run,
-4. Then created an app and installed it in settings.py,
-5. Then wrote models.py in that app,
-6. Used Django's inbuilt User model which by default comes with username, email, password, first name & last name,
-7. Then created superuser "seppe" & passwd "123456",
-8. Then ran migrations and checks,
-9. Then register models in admin.py
