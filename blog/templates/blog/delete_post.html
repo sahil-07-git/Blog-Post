@@ -19,10 +19,10 @@ Are you sure you want to delete
 
 <form method="POST">
     {% csrf_token %}
-    <button class="delete-btn">Delete</button>
+    <button class="btn delete-btn">Delete</button>
 </form>
 
-<a href="{% url 'post_detail' post.id %}" class="back-btn">
+<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
 Cancel
 </a>
 

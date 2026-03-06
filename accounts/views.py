@@ -1,20 +1,24 @@
 from django.shortcuts import render, redirect
-from .forms import SignupForm
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from .forms import SignupForm, LoginForm
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from blog.models import Post
+from django.contrib import messages
 
-def signup(request):
+def signup_view(request):
   if request.method == "POST":
     form = SignupForm(request.POST)
 
     if form.is_valid():
       user = form.save(commit=False)
       user.set_password(form.cleaned_data["password"])
-      user.save
+      user.save()
+
+      login(request, user)
+
+      messages.success(request, "Account created successfully!")
     
-      return redirect("login")
+      return redirect("dashboard")
   
   else:
     form = SignupForm()
@@ -23,24 +27,30 @@ def signup(request):
     "form": form
   })
 
-def login(request):
+def login_view(request):
   if request.method == "POST":
-
-    username = request.POST.get("username")
-    password = request.POST.get("password")
-
-    user = authenticate(request, username=username, password=password)
-
-    if user:
+    form = LoginForm(request, data=request.POST)
+    if form.is_valid():
+      user = form.get_user()
       login(request, user)
-      return redirect("dashboard")
-    
-  return render(request, "registration/login.html")
 
-def logout(request):
+      messages.success(request, "Welcome back!")
+
+      return redirect("dashboard")
+  
+  else:
+    form = LoginForm(request)
+    
+  return render(request, "registration/login.html", {
+    "form": form
+  })
+
+def logout_view(request):
   logout(request)
 
-  return redirect("post_list")
+  messages.info(request, "You have been logged out.")
+
+  return redirect("login")
 
 @login_required
 def dashboard(request):
