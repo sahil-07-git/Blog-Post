@@ -1,16 +1,35 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ post.title }}{% endblock  %}
-{% block content %}
-<h1>{{ post.title }}</h1>
+{% block title %}Delete Post{% endblock %}
 
-<p>Are you sure you want to delete "{{ post.title }}"?</p>
+{% block content %}
+
+<div class="container">
+
+<div class="post-card center">
+
+<h1>Delete Post</h1>
+
+<p>
+Are you sure you want to delete
+<strong>"{{ post.title }}"</strong>?
+</p>
+
+<div class="post-actions">
 
 <form method="POST">
     {% csrf_token %}
-    <button type="submit">Delete</button>
+    <button class="delete-btn">Delete</button>
 </form>
 
-<a href="{% url 'post_detail' post.id %}">Cancel</a>
-{% endblock  %}
+<a href="{% url 'post_detail' post.id %}" class="back-btn">
+Cancel
+</a>
 
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -18,11 +18,7 @@ By {{ post.author }} • {{ post.created_at }}
 
 <div class="post-actions">
 
-<a href="{% url 'edit_post' post.id %}" class="edit-btn">Edit</a>
-
-<a href="{% url 'delete_post' post.id %}" class="delete-btn">Delete</a>
-
-<a href="{% url 'post_list' %}" class="back-btn">Back</a>
+  <a href="{% url 'post_list' %}" class="back-btn">Back</a>
 
 </div>
 

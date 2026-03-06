@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="dashboard-header">
+
+<h1>Your Dashboard</h1>
+
+<div class="dashboard-actions">
+
+<a href="{% url 'create_post' %}" class="btn create-btn">
+Create Post
+</a>
+
+<span class="status-badge draft-badge">
+Draft: {{ draft_posts|length }}
+</span>
+
+<span class="status-badge published-badge">
+Published: {{ published_posts|length }}
+</span>
+
+</div>
+
+</div>
+
+
+<!-- Draft Posts -->
+
+<h2>Draft Posts</h2>
+
+{% for post in draft_posts %}
+
+<div class="post-card draft-card">
+
+<h3 class="post-title">{{ post.title }}</h3>
+
+<p class="post-meta">
+Created: {{ post.created_at }}
+</p>
+
+<div class="post-actions">
+
+<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
+Preview
+</a>
+
+<a href="{% url 'publish_post' post.id %}" class="btn create-btn">
+Publish
+</a>
+
+<a href="{% url 'edit_post' post.id %}" class="btn edit-btn">
+Edit
+</a>
+
+<a href="{% url 'delete_post' post.id %}" class="btn delete-btn">
+Delete
+</a>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p>No draft posts.</p>
+
+{% endfor %}
+
+<br>
+
+
+<!-- Published Posts -->
+
+<h2>Published Posts</h2>
+
+{% for post in published_posts %}
+
+<div class="post-card published-card">
+
+<h3 class="post-title">{{ post.title }}</h3>
+
+<p class="post-meta">
+Published: {{ post.created_at }}
+</p>
+
+<div class="post-actions">
+
+<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
+View
+</a>
+
+<a href="{% url 'edit_post' post.id %}" class="btn edit-btn">
+Edit
+</a>
+
+<a href="{% url 'delete_post' post.id %}" class="btn delete-btn">
+Delete
+</a>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p>No published posts yet.</p>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

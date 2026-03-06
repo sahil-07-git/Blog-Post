@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="post-card">
+
+    <h1>Create Account</h1>
+    
+    <form method="POST">
+    {% csrf_token %}
+    
+      <fieldset>
+        <label>Username</label>
+        {{ form.username }}
+
+        <label>Email</label>
+        {{ form.email }}
+
+        <label>Password</label>
+        {{ form.password }}
+        
+        <label>Confirm Password</label>
+        {{ form.confirm_password }}
+
+        <button type="submit">Signup</button>
+      </fieldset>
+
+    </form>
+
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="post-card">
+    <h1>Login</h1>
+    
+    <form method="POST">
+      {% csrf_token %}
+
+      <fieldset>
+        <label>Username</label>
+        {{ form.username }}
+
+        <label>Password</label>
+        {{ form.password }}
+
+        <button type="submit">Login</button>
+      </fieldset>
+      
+    </form>
+  </div>
+</div>
+{% endblock %}
