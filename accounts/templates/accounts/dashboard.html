@@ -1,117 +1,74 @@
 {% extends "layout.html" %}
-
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-
 <div class="container">
 
-<div class="dashboard-header">
+  <div class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Welcome back, {{ user.username }}</p>
+    </div>
+    <a href="{% url 'create_post' %}" class="new-post-btn">＋ New Post</a>
+  </div>
 
-<h1>Your Dashboard</h1>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">{{ draft_posts|length }}</div>
+      <div class="stat-label">Drafts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ published_posts|length }}</div>
+      <div class="stat-label">Published</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ draft_posts|length|add:published_posts|length }}</div>
+      <div class="stat-label">Total Posts</div>
+    </div>
+  </div>
 
-<div class="dashboard-actions">
+  <!-- Drafts -->
+  <div class="section-label">Drafts</div>
+  {% for post in draft_posts %}
+  <div class="dash-post-card">
+    <div class="dash-post-card-left">
+      <h3>{{ post.title }}</h3>
+      <div class="dash-post-meta">
+        Created {{ post.created_at|date:"M j, Y" }}
+        <span class="status-badge draft-badge">Draft</span>
+      </div>
+    </div>
+    <div class="post-actions">
+      <a href="{% url 'post_detail' post.id %}" class="btn back-btn">Preview</a>
+      <a href="{% url 'publish_post' post.id %}" class="btn create-btn">Publish</a>
+      <a href="{% url 'edit_post' post.id %}" class="btn edit-btn">Edit</a>
+      <a href="{% url 'delete_post' post.id %}" class="btn delete-btn">Delete</a>
+    </div>
+  </div>
+  {% empty %}
+  <p style="color:var(--ink-muted);font-size:0.875rem;padding:12px 0">No drafts yet.</p>
+  {% endfor %}
 
-<a href="{% url 'create_post' %}" class="btn create-btn">
-Create Post
-</a>
-
-<span class="status-badge draft-badge">
-Draft: {{ draft_posts|length }}
-</span>
-
-<span class="status-badge published-badge">
-Published: {{ published_posts|length }}
-</span>
-
-</div>
-
-</div>
-
-
-<!-- Draft Posts -->
-
-<h2>Draft Posts</h2>
-
-{% for post in draft_posts %}
-
-<div class="post-card draft-card">
-
-<h3 class="post-title">{{ post.title }}</h3>
-
-<p class="post-meta">
-Created: {{ post.created_at }}
-</p>
-
-<div class="post-actions">
-
-<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
-Preview
-</a>
-
-<a href="{% url 'publish_post' post.id %}" class="btn create-btn">
-Publish
-</a>
-
-<a href="{% url 'edit_post' post.id %}" class="btn edit-btn">
-Edit
-</a>
-
-<a href="{% url 'delete_post' post.id %}" class="btn delete-btn">
-Delete
-</a>
-
-</div>
-
-</div>
-
-{% empty %}
-
-<p>No draft posts.</p>
-
-{% endfor %}
-
-<br>
-
-
-<!-- Published Posts -->
-
-<h2>Published Posts</h2>
-
-{% for post in published_posts %}
-
-<div class="post-card published-card">
-
-<h3 class="post-title">{{ post.title }}</h3>
-
-<p class="post-meta">
-Published: {{ post.created_at }}
-</p>
-
-<div class="post-actions">
-
-<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
-View
-</a>
-
-<a href="{% url 'edit_post' post.id %}" class="btn edit-btn">
-Edit
-</a>
-
-<a href="{% url 'delete_post' post.id %}" class="btn delete-btn">
-Delete
-</a>
+  <!-- Published -->
+  <div class="section-label">Published</div>
+  {% for post in published_posts %}
+  <div class="dash-post-card">
+    <div class="dash-post-card-left">
+      <h3>{{ post.title }}</h3>
+      <div class="dash-post-meta">
+        Published {{ post.created_at|date:"M j, Y" }}
+        <span class="status-badge published-badge">Published</span>
+      </div>
+    </div>
+    <div class="post-actions">
+      <a href="{% url 'post_detail' post.id %}" class="btn back-btn">View</a>
+      <a href="{% url 'edit_post' post.id %}" class="btn edit-btn">Edit</a>
+      <a href="{% url 'delete_post' post.id %}" class="btn delete-btn">Delete</a>
+    </div>
+  </div>
+  {% empty %}
+  <p style="color:var(--ink-muted);font-size:0.875rem;padding:12px 0">No published posts yet.</p>
+  {% endfor %}
 
 </div>
-
-</div>
-
-{% empty %}
-
-<p>No published posts yet.</p>
-
-{% endfor %}
-
-</div>
-
 {% endblock %}

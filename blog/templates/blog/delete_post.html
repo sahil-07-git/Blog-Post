@@ -1,35 +1,19 @@
 {% extends "layout.html" %}
-
 {% block title %}Delete Post{% endblock %}
 
 {% block content %}
-
-<div class="container">
-
-<div class="post-card center">
-
-<h1>Delete Post</h1>
-
-<p>
-Are you sure you want to delete
-<strong>"{{ post.title }}"</strong>?
-</p>
-
-<div class="post-actions">
-
-<form method="POST">
-    {% csrf_token %}
-    <button class="btn delete-btn">Delete</button>
-</form>
-
-<a href="{% url 'post_detail' post.id %}" class="btn back-btn">
-Cancel
-</a>
-
+<div class="delete-wrap">
+  <div class="delete-card">
+    <div class="delete-icon">🗑</div>
+    <h1>Delete post?</h1>
+    <p>You're about to permanently delete <strong>"{{ post.title }}"</strong>. This cannot be undone.</p>
+    <div class="delete-actions">
+      <a href="{% url 'post_detail' post.id %}" class="btn btn-cancel">Cancel</a>
+      <form method="POST" style="display:inline">
+        {% csrf_token %}
+        <button class="btn-delete" type="submit">Yes, delete</button>
+      </form>
+    </div>
+  </div>
 </div>
-
-</div>
-
-</div>
-
 {% endblock %}

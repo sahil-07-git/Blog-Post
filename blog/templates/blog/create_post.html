@@ -1,25 +1,32 @@
 {% extends "layout.html" %}
-{% block title %}
-  {{ "Create Post" }}
-{% endblock %}
+{% block title %}New Post{% endblock %}
+
 {% block content %}
-<h1>Create Post</h1>
-  <form method="POST">
-    {% csrf_token %}
-    <fieldset>
-      <label for="title">Title</label>
-      <input type="text" name="title" id="title" required>
-      <br><br>
-      <label for="content">Content</label>
-      <textarea name="content" id="content" required></textarea>
-      <br><br>
-      <label for="status">Status</label>
-      <select name="status" required id="status">
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-      </select>
-      <br><br>
-      <button type="submit">Publish</button>
-    </fieldset>
-  </form>
+<div class="container-form">
+  <div class="form-card">
+    <h1>New Post</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="field">
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title }}
+        {{ form.title.errors }}
+      </div>
+      <div class="field">
+        <label for="{{ form.content.id_for_label }}">Content</label>
+        {{ form.content }}
+        {{ form.content.errors }}
+      </div>
+      <div class="field">
+        <label for="{{ form.status.id_for_label }}">Status</label>
+        {{ form.status }}
+        {{ form.status.errors }}
+      </div>
+      <div class="form-footer">
+        <a href="{% url 'dashboard' %}" class="btn btn-cancel">Cancel</a>
+        <button class="btn btn-primary" type="submit">Create Post</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

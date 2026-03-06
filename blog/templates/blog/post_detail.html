@@ -1,27 +1,104 @@
 {% extends "layout.html" %}
-
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
+<div class="container-narrow">
 
-<div class="post-card">
+  <a class="back-link" href="{% url 'post_list' %}">← All posts</a>
 
-<h1 class="post-title">{{ post.title }}</h1>
+  <div class="article-header">
+    <h1>{{ post.title }}</h1>
+    <div class="post-meta">
+      <span>{{ post.author }}</span>
+      <span class="post-meta-dot"></span>
+      <span>{{ post.created_at|date:"F j, Y" }}</span>
+    </div>
+  </div>
 
-<p class="post-meta">
-By {{ post.author }} • {{ post.created_at }}
-</p>
+  <div class="post-content">
+    {{ post.content|linebreaksbr }}
+  </div>
 
-<p class="post-content">
-{{ post.content }}
-</p>
+  <!-- ── Reactions ── -->
+  <div class="reactions-bar">
+    {% if user.is_authenticated %}
+      <a href="{% url 'react_to_post' post.id 'like' %}"
+         class="reaction-btn {% if user_reaction == 'like' %}reaction-active-like{% endif %}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="{% if user_reaction == 'like' %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+          <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+        </svg>
+        <span>{{ post.like_count }}</span>
+      </a>
+      <a href="{% url 'react_to_post' post.id 'dislike' %}"
+         class="reaction-btn {% if user_reaction == 'dislike' %}reaction-active-dislike{% endif %}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="{% if user_reaction == 'dislike' %}currentColor{% else %}none{% endif %}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/>
+          <path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+        </svg>
+        <span>{{ post.dislike_count }}</span>
+      </a>
+    {% else %}
+      <a href="{% url 'login' %}" class="reaction-btn reaction-guest">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/>
+          <path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+        </svg>
+        <span>{{ post.like_count }}</span>
+      </a>
+      <a href="{% url 'login' %}" class="reaction-btn reaction-guest">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/>
+          <path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+        </svg>
+        <span>{{ post.dislike_count }}</span>
+      </a>
+    {% endif %}
+    <span class="reactions-comment-count">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
+    </span>
+  </div>
 
-<div class="post-actions">
+  <!-- ── Comments ── -->
+  <div class="comments-section">
+    <h2 class="comments-title">Comments</h2>
 
-  <a href="{% url 'post_list' %}" class="btn back-btn">Back</a>
+    {% if comments %}
+      {% for comment in comments %}
+      <div class="comment-card">
+        <div class="comment-header">
+          <span class="comment-author">{{ comment.author }}</span>
+          <span class="comment-date">{{ comment.created_at|date:"M j, Y" }}</span>
+        </div>
+        <p class="comment-body">{{ comment.body }}</p>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-comments">No comments yet. Be the first!</p>
+    {% endif %}
+
+    <!-- Comment form -->
+    {% if user.is_authenticated %}
+    <div class="comment-form-wrap">
+      <h3 class="comment-form-title">Leave a comment</h3>
+      <form method="POST" action="{% url 'add_comment' post.id %}">
+        {% csrf_token %}
+        {{ comment_form.body }}
+        {{ comment_form.body.errors }}
+        <div class="comment-form-footer">
+          <button class="btn btn-primary" type="submit">Post Comment</button>
+        </div>
+      </form>
+    </div>
+    {% else %}
+    <div class="comment-login-prompt">
+      <a href="{% url 'login' %}">Sign in</a> to leave a comment.
+    </div>
+    {% endif %}
+  </div>
 
 </div>
-
-</div>
-
 {% endblock %}

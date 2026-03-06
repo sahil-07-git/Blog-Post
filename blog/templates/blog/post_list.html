@@ -1,27 +1,44 @@
 {% extends "layout.html" %}
-
-{% block title %}
-  {{ "Blog Posts" }}
-{% endblock %}
+{% block title %}Posts{% endblock %}
 
 {% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Latest Posts</h1>
+    <span class="post-count">{{ posts|length }} article{{ posts|length|pluralize }}</span>
+  </div>
 
-{% for post in posts %}
-<div class="post-card">
-
-<h2 class="post-title">
-<a href="{% url 'post_detail' post.id %}">
-{{ post.title }}
-</a>
-</h2>
-
-<p class="post-meta">
-By {{ post.author }} • {{ post.created_at }}
-</p>
-
-<p>{{ post.content|truncatechars:120 }}</p>
-
+  {% for post in posts %}
+  <div class="post-card">
+    <h2 class="post-title">
+      <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+    </h2>
+    <div class="post-meta">
+      <span>{{ post.author }}</span>
+      <span class="post-meta-dot"></span>
+      <span>{{ post.created_at|date:"F j, Y" }}</span>
+    </div>
+    <p class="post-excerpt">{{ post.content|truncatechars:160 }}</p>
+    <div class="post-card-footer">
+      <a class="read-more" href="{% url 'post_detail' post.id %}">Read article →</a>
+      <div class="post-counters">
+        <span class="counter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+          {{ post.like_count }}
+        </span>
+        <span class="counter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+          {{ post.dislike_count }}
+        </span>
+        <span class="counter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          {{ post.comment_count }}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p style="color:var(--ink-muted);text-align:center;padding:60px 0;">No posts published yet.</p>
+  {% endfor %}
 </div>
-{% endfor %}
-
 {% endblock %}

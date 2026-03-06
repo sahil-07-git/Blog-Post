@@ -1,44 +1,44 @@
 {% extends "layout.html" %}
-
-{% block title %}Sign Up{% endblock %}
+{% block title %}Sign up{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-eyebrow">Get started</div>
+    <h1>Create account</h1>
+    <p class="auth-sub">Join BloggersHub and start writing today.</p>
 
-  <div class="post-card">
-
-    <h1>Signup</h1>
     {% if form.non_field_errors %}
-    <div class="form-error">
-      {{ form.non_field_errors|striptags }}
-    </div>
+      <div class="form-error">{{ form.non_field_errors|striptags }}</div>
     {% endif %}
+
     <form method="POST">
       {% csrf_token %}
-      
-      <fieldset>
-        <label for=id_username>Username</label>
+      <div class="field">
+        <label for="{{ form.username.id_for_label }}">Username</label>
         {{ form.username }}
         {{ form.username.errors }}
-
-        <label for=id_email>Email</label>
+      </div>
+      <div class="field">
+        <label for="{{ form.email.id_for_label }}">Email</label>
         {{ form.email }}
         {{ form.email.errors }}
-
-        <label for=id_password>Password</label>
+      </div>
+      <div class="field">
+        <label for="{{ form.password.id_for_label }}">Password</label>
         {{ form.password }}
         {{ form.password.errors }}
-        
-        <label for=id_confirm_password>Confirm Password</label>
+      </div>
+      <div class="field">
+        <label for="{{ form.confirm_password.id_for_label }}">Confirm password</label>
         {{ form.confirm_password }}
         {{ form.confirm_password.errors }}
-
-        <button type="submit">Signup</button>
-      </fieldset>
-
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" type="submit">Create account</button>
     </form>
 
+    <hr class="auth-divider">
+    <div class="auth-footer">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
   </div>
-
 </div>
 {% endblock %}
