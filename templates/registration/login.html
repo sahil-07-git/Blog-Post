@@ -16,11 +16,11 @@
       {% csrf_token %}
       
       <fieldset>
-        <label>Username</label>
+        <label for=id_username>Username</label>
         {{ form.username }}
         {{ form.username.errors }}
 
-        <label>Password</label>
+        <label for=id_password>Password</label>
         {{ form.password }}
         {{ form.password.errors }}
 
