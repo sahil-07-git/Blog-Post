@@ -79,7 +79,7 @@ bloggershub/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/bloggershub.git
+git clone https://github.com/sahil-07-git/bloggershub.git
 cd bloggershub
 ```
 
