@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container-form">
+  <div class="form-card">
+    <h1>Edit Profile</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="field">
+        <label for="{{ form.bio.id_for_label }}">Bio</label>
+        {{ form.bio }}
+        {{ form.bio.errors }}
+      </div>
+      <div class="form-footer">
+        <a href="{% url 'user_profile' user.username %}" class="btn btn-cancel">Cancel</a>
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -9,7 +9,10 @@
       <h1>Dashboard</h1>
       <p>Welcome back, {{ user.username }}</p>
     </div>
-    <a href="{% url 'create_post' %}" class="new-post-btn">＋ New Post</a>
+    <div class="dashboard-header-actions">
+      <a href="{% url 'user_profile' user.username %}" class="btn btn-cancel">My Profile</a>
+      <a href="{% url 'create_post' %}" class="new-post-btn">＋ New Post</a>
+    </div>
   </div>
 
   <div class="stats-row">

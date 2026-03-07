@@ -9,13 +9,20 @@
 </head>
 <body>
   <nav class="top-bar">
-    <a href="{% url 'post_list' %}" class="logo">Bloggers<span>Hub</span></a>
+    <a href="{% url 'home' %}" class="logo">Bloggers<span>Hub</span></a>
+
+      
     <div class="nav-links">
+      <!-- Global search -->
+      <form class="nav-search" method="GET" action="{% url 'post_list' %}">
+        <svg class="nav-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="nav-search-input" type="text" name="q" placeholder="Search posts..." value="{% if request.GET.q %}{{ request.GET.q }}{% endif %}">
+      </form>
       <a href="{% url 'post_list' %}" class="nav-btn nav-btn-posts">Posts</a>
       {% if user.is_authenticated %}
         <a href="{% url 'dashboard' %}" class="nav-btn">Dashboard</a>
         <div class="nav-divider"></div>
-        <span class="nav-btn" style="color:#666;cursor:default">{{ user.username }}</span>
+        <a href="{% url 'user_profile' user.username %}" class="nav-btn nav-btn-profile">{{ user.username }}</a>
         <a href="{% url 'logout' %}" class="nav-btn logout-btn">Logout</a>
       {% else %}
         <a href="{% url 'login' %}" class="nav-btn">Login</a>

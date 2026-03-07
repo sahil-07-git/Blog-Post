@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, UserProfile
 
 
 class PostForm(forms.ModelForm):
@@ -18,17 +18,50 @@ class PostForm(forms.ModelForm):
             raise forms.ValidationError("Title must be at least 5 characters long.")
         return title
 
+
 class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
         fields = ["body"]
         widgets = {
-            "body": forms.Textarea(attrs={
-                "placeholder": "Write a comment...",
-                "rows": 3,
-            })
+            "body": forms.Textarea(
+                attrs={
+                    "placeholder": "Write a comment...",
+                    "rows": 3,
+                }
+            )
         }
-        labels = {
-            "body": ""
+        labels = {"body": ""}
+
+
+class ReplyForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ["body"]
+        widgets = {
+            "body": forms.Textarea(
+                attrs={
+                    "placeholder": "Write a reply...",
+                    "rows": 2,
+                }
+            )
         }
+        labels = {"body": ""}
+
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ["bio"]
+        widgets = {
+            "bio": forms.Textarea(
+                attrs={
+                    "placeholder": "Tell readers a little about yourself...",
+                    "rows": 4,
+                }
+            )
+        }
+        labels = {"bio": "Bio"}
